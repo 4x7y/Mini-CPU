@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Yuechuan Xue
 // 
 // Create Date: 2015/07/08 23:41:55
 // Design Name: 

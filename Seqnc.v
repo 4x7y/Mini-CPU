@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Yuechuan Xue
 // 
 // Create Date: 2015/07/12 11:18:00
 // Design Name: 
@@ -53,13 +53,13 @@ module Seqnc(
 			
 		end
 		else casex ({Instr[11:6], Z})
-			7'b101????: {PC_next, push, pop} <=			{K9, 1'b0, 1'b0};	// GOTO:	101k kkkk kkkk æ— æ¡ä»¶è·³è½¬ï¼Œå¯è®¿é—®å…¨éƒ¨ç¨‹åºå­˜å‚¨å™¨ (2^9 = 512)
-			7'b1001???: {PC_next, push, pop} <=	{{1'b0, K8}, 1'b1, 1'b0};	// CALL:	1001 kkkk kkkk è°ƒç”¨å­ç¨‹åºï¼Œå¯è®¿é—®å‰ä¸€èˆ¬ç¨‹åºå­˜å‚¨å™¨ (2^8 = 256)
-			7'b1000???: {PC_next, push, pop} <= {stack_pop,  1'b0, 1'b1};	// RETLW:	1000 kkkk kkkk è¿”å›žå¹¶å°†ç«‹å³æ•°ä¼ é€åˆ° W
-			7'b0111??0,														// BTFSS:	0111 bbbf ffff æ£€æµ‹ Reg_file(f ffff) ä¸­çš„ bbb ä½ï¼Œä¸º 1 (Z = 0) åˆ™è·³è¿‡
-			7'b0110??1,														// BTFSC:	0110 bbbf ffff æ£€æµ‹ Reg_file(f ffff) ä¸­çš„ bbb ä½ï¼Œä¸º 0 (Z = 1) åˆ™è·³è¿‡
-			7'b0011111,														// INCFSZ:	0011 11df ffff f å¢ž 1ï¼Œä¸º 0 (Z = 1) åˆ™è·³è¿‡
-			7'b0010111: {PC_next, push, pop} <=	{PC_plus2,   1'b0, 1'b0};	// DECFSZ:	0010 11df ffff f å‡ 1ï¼Œä¸º 0 (Z = 1) åˆ™è·³è¿‡
+			7'b101????: {PC_next, push, pop} <=			{K9, 1'b0, 1'b0};	// GOTO:	101k kkkk kkkk ÎÞÌõ¼þÌø×ª£¬¿É·ÃÎÊÈ«²¿³ÌÐò´æ´¢Æ÷ (2^9 = 512)
+			7'b1001???: {PC_next, push, pop} <=	{{1'b0, K8}, 1'b1, 1'b0};	// CALL:	1001 kkkk kkkk µ÷ÓÃ×Ó³ÌÐò£¬¿É·ÃÎÊÇ°Ò»°ã³ÌÐò´æ´¢Æ÷ (2^8 = 256)
+			7'b1000???: {PC_next, push, pop} <= {stack_pop,  1'b0, 1'b1};	// RETLW:	1000 kkkk kkkk ·µ»Ø²¢½«Á¢¼´Êý´«ËÍµ½ W
+			7'b0111??0,														// BTFSS:	0111 bbbf ffff ¼ì²â Reg_file(f ffff) ÖÐµÄ bbb Î»£¬Îª 1 (Z = 0) ÔòÌø¹ý
+			7'b0110??1,														// BTFSC:	0110 bbbf ffff ¼ì²â Reg_file(f ffff) ÖÐµÄ bbb Î»£¬Îª 0 (Z = 1) ÔòÌø¹ý
+			7'b0011111,														// INCFSZ:	0011 11df ffff f Ôö 1£¬Îª 0 (Z = 1) ÔòÌø¹ý
+			7'b0010111: {PC_next, push, pop} <=	{PC_plus2,   1'b0, 1'b0};	// DECFSZ:	0010 11df ffff f ¼õ 1£¬Îª 0 (Z = 1) ÔòÌø¹ý
 			   default:
 			   			if (PCL_wr) {PC_next, push, pop} <= {{1'b0, f_in_data}, 1'b0, 1'b0};
 			   			else 		{PC_next, push, pop} <= {		   PC_plus, 1'b0, 1'b0};
