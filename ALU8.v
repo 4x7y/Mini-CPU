@@ -54,6 +54,7 @@ module ALU8(
     .C_in(C_in),
     .oprd(op_A1),
     .rlf_n_rrf(rlf_n_rrf),      // 0: rrf , 1: rlf
+    // Output
     .S_out(S_out),
     .C_out(C_out)
     ); 

@@ -202,12 +202,11 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 
 	wire [7:0] bit_mask = BCF ? ~bit_loc : bit_loc;
 
-
 	//
 	wire f_rd = Bit_Op || (Iw_b00 && Instr[9:7] != 3'b000);
 	wire f_wr = (BCF || BSF) || (Iw_b00 && (Instr[5] == 1'b1));
 
-	wire W_wr = K8_Op || (Iw_b00 && !Iw_bxx0000 && (Instr[5] == 1'b0));
+	wire W_wr = K8_Op || (Iw_b00 && !Iw_bxx0000 && (Instr[5] == 1'b0)); //
 	wire Stack_l_wr = CALL || RETLW;
 
 	//

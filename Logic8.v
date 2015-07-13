@@ -30,7 +30,7 @@ module Logic8(
     wire    [7:0]  Func_ior     = op_A | op_B;
     wire    [7:0]  Func_and     = op_A & op_B;
     wire    [7:0]  Func_xor     = op_A ^ op_B;
-    wire    [7:0]  Func_comp    = -op_A;
+    wire    [7:0]  Func_comp    = ~op_A;
     
     assign   Func = (op_mux[1]) ? (op_mux[0] ? Func_comp : Func_xor) : (op_mux[0] ? Func_and : Func_ior) ;
     

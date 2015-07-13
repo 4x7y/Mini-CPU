@@ -69,14 +69,14 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 	reg  [7:0] W;
 	wire [7:0] W_next;
 
-	wire       SLEEP, CLRWDT;
-	wire       OPTION_wr, TRISA_wr, TRISB_wr;  
-	wire       MOVWF, CLR, SUBWF, RLF, SWAPF;
-	wire [7:0] bit_mask;
-	wire       Bit_Op, K8A_sel, K8W_sel;
-	wire [1:0] Op_Mux_L, Op_Mux_A, ALU_out_Mux;
-	wire       Z_en, DC_en, C_en;
-	wire		  W_wr, f_wr;
+	wire		SLEEP, CLRWDT;
+	wire		OPTION_wr, TRISA_wr, TRISB_wr;  
+	wire		MOVWF, CLR, SUBWF, RLF, SWAPF;
+	wire [7:0]	bit_mask;
+	wire		Bit_Op, K8A_sel, K8W_sel;
+	wire [1:0]	Op_Mux_L, Op_Mux_A, ALU_out_Mux;
+	wire		Z_en, DC_en, C_en;
+	wire		W_wr, f_wr;
 
 
 	Seqnc  Seqnc_01 (
@@ -102,13 +102,10 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		.FI(FI),
 		.FO(FO)
 	);
-//
-////////////////////////////////////////////////////////////////////////////////
-//
-	always @(posedge clk)
-		{PCH, PCL} <= PC_next;
-//
-//
+
+	// not sure ...
+	always @(posedge clk) {PCH, PCL} <= PC_next;
+
 	Prog_ROM  Prog_ROM_01
 	(
 		.clk(clk), 
@@ -152,9 +149,7 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		.f_wr(f_wr),
 		.f_rd(f_rd)         //not used here anymore
 	);
-//
-////////////////////////////////////////////////////////////////////////////////
-//
+
 	assign f_adrs = ;
 //
 //
