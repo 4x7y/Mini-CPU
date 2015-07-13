@@ -27,6 +27,21 @@ module Stack (
 	output out
 	);
 
+	//									 ---------------
+	//									|	 Stack  2	| <-- 
+	//									 ---------------	  ^  push
+	//	in 	=	Stack_1_next 	=>		|	 Stack  1	| --> ^
+	//	   push				push||pop	 ---------------
+	//										   ||
+	//										   out
+
+	// PUSH:
+	//			in =  Stack_1 => Stack_2
+	// POP:
+	//			Stack_2 => Stack_1 = out
+	// OTHER:
+	//			Stack_1 = out
+
 	reg		[8:0] Stack_1, Stack_2;
 
 	wire	[8:0] Stack_1_next = push ? in : Stack_2;

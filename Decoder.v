@@ -157,26 +157,22 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 		endcase
 	end
 
-	wire Group0		= MOVF	|| SWAPF || CLR;			// 将 f 的内容传送到目标寄存器, 将 f 中的两个半字节进行交换, f 清零
-														// 00 1000 df ffff
-														// 00 1110 df ffff
-														// 00 0001 1f ffff
-														// 00 0001 00 0000
-
-	wire Group1		= RRF	|| RLF;						// 对 f 执行带进位的循环右移, 对 f 执行带进位的循环左移
-														// 00 1100 df ffff
-														// 00 1101 df ffff
-
+	wire Group0		= MOVF	|| SWAPF || CLR;
+	wire Group1		= RRF	|| RLF;	
 	wire Group2a	= (IORWF || IORLW) || (ANDWF || ANDLW) || (XORWF || XORLW);	//
 	wire Group2b	= COMF || BCF || BSF || BTFSC || BTFSS;
 	wire Group2		= Group2a || Group2b;
 	wire Group3		= ADDWF || SUBWF || (INCF || INCFSZ) || (DECF || DECFSZ);
 
-	// assign         C_new =   out_mux[1] ? C_wire : C_out;
-    // assign   ALU_out_buf =   out_mux[1] ? (out_mux[0] ? Sum : Func) : (out_mux[0] ? S_out : T_out);
-    // assign       ALU_out =   ALU_out_buf;
-    // assign         Z_new = ~|ALU_out_buf;
+	// ALU_out_Mux	|	ALU_out 	C_new	Mux		Group		Instruct
+	// ---------------------------------------------------------------------------------------------------------
+    //			00	|	T_out		C_out	Throu	Group0		MOVF,  SWAPF, CLR
+    //			01	|	S_out		C_out	Shift	Group1		RRF,   RLF
+    //			10	|	Func		C_wire	Logic	Group2		IORWF, IORLW, ANDWF, ANDLW, XORWF, XORLW, COMF ...
+    //			11	|	Sum			C_wire	Adder	Group3		ADDWF, SUBWF, INCF,  INCFSZ ...
 
+    // if (ALU_out = 8'b00000000)	Z_new = 1;
+    // else							Z_new = 0;
 
 	always @(Group0, Group1, Group2, Group3) begin
 		case({Group0, Group1, Group2, Group3})
@@ -221,6 +217,4 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 	wire Z_en	= DC_en || Group2a || CLR || DECF || MOVF || COMF || INCF;
 	wire STT_en	= Z_en	|| DC_en   || C_en; 
 
-
-    
 endmodule
