@@ -3,9 +3,6 @@
 #### Uncomplete
 
 * PIC16F54.v
-* Reg_File.v
-* Reg_Misc.v
-
 
 #### Complete
 
@@ -19,6 +16,8 @@
 * Shift8.v
 * Stack.v
 * Throu.v
+* Reg_File.v
+* Reg_Misc.v
 
 #### Tested
 

@@ -40,6 +40,7 @@ module Reg_File(
 	input  reg [7:0] f_out_data,
 	input  reg [7:0] PORTB,
 	input  reg [7:0] PORTA,
+
 	output reg [4:0] FSR,
 	output reg       C,
 	output reg       PCL_wr
@@ -82,12 +83,12 @@ module Reg_File(
 	wire    PORTB_wr    = f_wr & (f_adrs ==  PORTB_adrs);
 
 	always @(posedge clk)
-		if (PORTB_wr)   PORTB <= f_in_data;
-		else			PORTB <= PORTB;
-
-	always @(posedge clk)
 		if (PORTA_wr)	PORTA <= f_in_data[3:0];
 		else			PORTA <= PORTA;
+
+	always @(posedge clk)
+		if (PORTB_wr)   PORTB <= f_in_data;
+		else			PORTB <= PORTB;
 
    always @(posedge clk)
 		if (FSR_wr)		  FSR <= f_in_data[4:0];
@@ -96,10 +97,9 @@ module Reg_File(
 	always @(posedge clk)
 		if      (rst)           TMR0 <= 0;
 		else if (TMR0_wr) 		TMR0 <= f_in_data;
-		else if (tmr0_inc)   	TMR0 <= TMR0+1;
+		else if (tmr0_inc)   	TMR0 <= TMR0 + 1;
 		else                    TMR0 <= TMR0;
-//
-//
+
 	wire        PAn_wr    = STATUS_wr;
 	wire [2:0]  PAn_next  = f_in_data[7:5];
 
@@ -138,10 +138,10 @@ module Reg_File(
 		else 				  DC <= DC;
 		
 		if (C_wr) 			   C <= C_next;
-		else				   C <=C;                                        
+		else				   C <= C;                                        
 	end
 
-	always @(f_adrs, TMR0, PCL1, STATUS, FSR, porta_in, portb_in, data_out_RAM)
+	always @(f_adrs, TMR0, PCL1, STATUS, FSR, porta_in, portb_in, data_out_RAM) begin
 		case(f_adrs)
 			5'b00000: f_out_data = 8'h00;
 			5'b00001: f_out_data = TMR0;
@@ -152,5 +152,5 @@ module Reg_File(
 			5'b00110: f_out_data = portb_in;
 			default: f_out_data = data_out_RAM;
 		endcase
-			
+	end
 endmodule
