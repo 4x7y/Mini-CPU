@@ -34,27 +34,27 @@ module Reg_Misc(
 //
 //////////////////////////////////////////////////////////////////////////////////
 //
-//   always @(posedge clk)
-//      if (rst) TRISA <= 4'b1111;
-//      else begin
-//         if (TRISA_wr)	TRISA <= ;
-//         else	        TRISA <= ;
-//      end
+  always @(posedge clk)
+     if (rst) TRISA <= 4'b1111;
+     else begin
+        if (TRISA_wr)	TRISA <= W[3:0];
+        else	        TRISA <= TRISA;
+     end
 
-//   always @(posedge clk)
-//      if (rst) TRISB <= 8'b11111111;
-//      else begin
-//         if (TRISB_wr)	TRISB <= ;
-//         else	        TRISB <= ;
-//      end
-////
-//   always @(posedge clk)
-//      if (rst) OPTION <= 8'b11111111;
-//      else begin
-//         if (OPTION_wr)	OPTION <= ;
-//         else	        OPTION <= ;
-//      end
+  always @(posedge clk)
+     if (rst) TRISB <= 8'b11111111;
+     else begin
+        if (TRISB_wr)	TRISB <= W;
+        else	        TRISB <= TRISB;
+     end
 //
+  always @(posedge clk)
+     if (rst) OPTION <= 8'b11111111;
+     else begin
+        if (OPTION_wr)	OPTION <= W;
+        else	        OPTION <= OPTION;
+     end
+
 //////////////////////////////////////////////////////////////////////////////////
 //
 endmodule

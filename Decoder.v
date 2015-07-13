@@ -63,118 +63,132 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 	wire Iw_b11		= (Instr[11:10] == 2'b11);
 	wire Iw_bxx0000	= (Instr[9:6] == 4'b0000);
 
-	wire OPTION 	= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000010); // 0000 0000 0010		ÎŞ		×°ÔØ OPTION ¼Ä´æÆ÷
-	wire SLEEP		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000011); // 0000 0000 0011	~TO ºÍ ~PD	½øÈë´ı»úÄ£Ê½
-	wire CLRWDT		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000100); // 0000 0000 0100	~TO ºÍ ~PD	ÇåÁã¿´ÃÅ¹·¶¨Ê±Æ÷
-	wire TRIS1		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000101); //	0000 0000 0fff		ÎŞ		W ¼Ä´æÆ÷µÄÄÚÈİ·Ö±ğ±»Ğ´Èë PORTA
-	wire TRIS2		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000110); // 0000 0000 0fff		ÎŞ		W ¼Ä´æÆ÷µÄÄÚÈİ·Ö±ğ±»Ğ´Èë PORTB
+	wire OPTION 	= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000010); // 0000 0000 0010		æ— 		è£…è½½ OPTION å¯„å­˜å™¨
+	wire SLEEP		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000011); // 0000 0000 0011	~TO å’Œ ~PD	è¿›å…¥å¾…æœºæ¨¡å¼
+	wire CLRWDT		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000100); // 0000 0000 0100	~TO å’Œ ~PD	æ¸…é›¶çœ‹é—¨ç‹—å®šæ—¶å™¨
+	wire TRIS1		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000101); //	0000 0000 0fff		æ— 		W å¯„å­˜å™¨çš„å†…å®¹åˆ†åˆ«è¢«å†™å…¥ PORTA
+	wire TRIS2		= Iw_b00 && Iw_bxx0000 && (Instr[5:0] == 6'b000110); // 0000 0000 0fff		æ— 		W å¯„å­˜å™¨çš„å†…å®¹åˆ†åˆ«è¢«å†™å…¥ PORTB
 
-	wire MOVWF		= Iw_b00 && Iw_bxx0000 && (Instr[5] == 1'b1);		 // 0000 001f ffff		ÎŞ		½« f µÄÄÚÈİ´«ËÍµ½Ä¿±ê¼Ä´æÆ÷
+	wire MOVWF		= Iw_b00 && Iw_bxx0000 && (Instr[5] == 1'b1);		 // 0000 001f ffff		æ— 		å°† f çš„å†…å®¹ä¼ é€åˆ°ç›®æ ‡å¯„å­˜å™¨
 
-	wire CLR		= Iw_b00 && (Instr[9:6] == 4'b0001);	// 00 0001 1f ffff	½« f ÇåÁã
-															// 00 0001 00 0000	½« W ¼Ä´æÆ÷ÇåÁã
-	wire SUBWF		= Iw_b00 && (Instr[9:6] == 4'b0010);	// 00 0010 df ffff	f ¼õÈ¥ W
-	wire DECF		= Iw_b00 && (Instr[9:6] == 4'b0011);	// 00 0011 df ffff	f ¼õ 1
-	wire IORWF		= Iw_b00 && (Instr[9:6] == 4'b0100);	// 00 0100 df ffff	W ºÍ f ×÷Âß¼­»òÔËËã
-	wire ANDWF		= Iw_b00 && (Instr[9:6] == 4'b0101);	// 00 0101 df ffff	W ºÍ f ×÷Âß¼­ÓëÔËËã
-	wire XORWF		= Iw_b00 && (Instr[9:6] == 4'b0110);	// 00 0110 df ffff	W ºÍ f ×÷Âß¼­Òì»òÔËËã
-	wire ADDWF		= Iw_b00 && (Instr[9:6] == 4'b0111);	// 00 0111 df ffff	W ºÍ f Ïà¼Ó
-	wire MOVF		= Iw_b00 && (Instr[9:6] == 4'b1000);	// 00 1000 df ffff	½« f µÄÄÚÈİ´«ËÍµ½Ä¿±ê¼Ä´æÆ÷
-	wire COMF		= Iw_b00 && (Instr[9:6] == 4'b1001);	// 00 1001 df ffff	f È¡·´
-	wire INCF		= Iw_b00 && (Instr[9:6] == 4'b1010);	// 00 1010 df ffff	f Ôö 1
-	wire DECFSZ		= Iw_b00 && (Instr[9:6] == 4'b1011);	// 00 1011 df ffff	f ¼õ 1,Îª 0 ÔòÌø¹ı
-	wire RRF		= Iw_b00 && (Instr[9:6] == 4'b1100);	// 00 1100 df ffff	¶Ô f Ö´ĞĞ´ø½øÎ»µÄÑ­»·ÓÒÒÆ
-	wire RLF		= Iw_b00 && (Instr[9:6] == 4'b1101);	// 00 1101 df ffff	¶Ô f Ö´ĞĞ´ø½øÎ»µÄÑ­»·×óÒÆ
-	wire SWAPF		= Iw_b00 && (Instr[9:6] == 4'b1110);	// 00 1110 df ffff	½« f ÖĞµÄÁ½¸ö°ë×Ö½Ú½øĞĞ½»»»
-	wire INCFSZ		= Iw_b00 && (Instr[9:6] == 4'b1111);	// 00 1111 df ffff	f Ôö 1,Îª 0 ÔòÌø¹ı
+	wire CLR		= Iw_b00 && (Instr[9:6] == 4'b0001);	// 00 0001 1f ffff	å°† f æ¸…é›¶
+															// 00 0001 00 0000	å°† W å¯„å­˜å™¨æ¸…é›¶
+	wire SUBWF		= Iw_b00 && (Instr[9:6] == 4'b0010);	// 00 0010 df ffff	f å‡å» W
+	wire DECF		= Iw_b00 && (Instr[9:6] == 4'b0011);	// 00 0011 df ffff	f å‡ 1
+	wire IORWF		= Iw_b00 && (Instr[9:6] == 4'b0100);	// 00 0100 df ffff	W å’Œ f ä½œé€»è¾‘æˆ–è¿ç®—
+	wire ANDWF		= Iw_b00 && (Instr[9:6] == 4'b0101);	// 00 0101 df ffff	W å’Œ f ä½œé€»è¾‘ä¸è¿ç®—
+	wire XORWF		= Iw_b00 && (Instr[9:6] == 4'b0110);	// 00 0110 df ffff	W å’Œ f ä½œé€»è¾‘å¼‚æˆ–è¿ç®—
+	wire ADDWF		= Iw_b00 && (Instr[9:6] == 4'b0111);	// 00 0111 df ffff	W å’Œ f ç›¸åŠ 
+	wire MOVF		= Iw_b00 && (Instr[9:6] == 4'b1000);	// 00 1000 df ffff	å°† f çš„å†…å®¹ä¼ é€åˆ°ç›®æ ‡å¯„å­˜å™¨
+	wire COMF		= Iw_b00 && (Instr[9:6] == 4'b1001);	// 00 1001 df ffff	f å–å
+	wire INCF		= Iw_b00 && (Instr[9:6] == 4'b1010);	// 00 1010 df ffff	f å¢ 1
+	wire DECFSZ		= Iw_b00 && (Instr[9:6] == 4'b1011);	// 00 1011 df ffff	f å‡ 1,ä¸º 0 åˆ™è·³è¿‡
+	wire RRF		= Iw_b00 && (Instr[9:6] == 4'b1100);	// 00 1100 df ffff	å¯¹ f æ‰§è¡Œå¸¦è¿›ä½çš„å¾ªç¯å³ç§»
+	wire RLF		= Iw_b00 && (Instr[9:6] == 4'b1101);	// 00 1101 df ffff	å¯¹ f æ‰§è¡Œå¸¦è¿›ä½çš„å¾ªç¯å·¦ç§»
+	wire SWAPF		= Iw_b00 && (Instr[9:6] == 4'b1110);	// 00 1110 df ffff	å°† f ä¸­çš„ä¸¤ä¸ªåŠå­—èŠ‚è¿›è¡Œäº¤æ¢
+	wire INCFSZ		= Iw_b00 && (Instr[9:6] == 4'b1111);	// 00 1111 df ffff	f å¢ 1,ä¸º 0 åˆ™è·³è¿‡
 
-	// ´«ÈëµÄÖ¸Áî»áÊ¹ÏàÓ¦µÄ wire ±äÁ¿Îª 1£¬·ñÔòÎª 0
-	wire Bit_Op 	= Iw_b01;							// 01-- bbbf ffff   ÎŞ	¶Ô f ÖĞÄ³Î»²Ù×÷£¬¾ßÌå°üº¬ÏÂÃæËÄÖÖÇé¿ö
-	wire BCF		= Iw_b01 && (Instr[9:8] == 2'b00);	// 0100 bbbf ffff	ÎŞ	½« f ÖĞµÄÄ³Î»ÇåÁã
-	wire BSF		= Iw_b01 && (Instr[9:8] == 2'b01);	// 0101 bbbf ffff	ÎŞ	½« f ÖĞµÄÄ³Î»ÖÃ 1
-	wire BTFSC		= Iw_b01 && (Instr[9:8] == 2'b10);	// 0110 bbbf ffff	ÎŞ	¼ì²â f ÖĞµÄÄ³Î»,Îª 0 ÔòÌø¹ı
-	wire BTFSS		= Iw_b01 && (Instr[9:8] == 2'b11);	// 0111 bbbf ffff	ÎŞ	¼ì²â f ÖĞµÄÄ³Î»,Îª 1 ÔòÌø¹ı
+	// ä¼ å…¥çš„æŒ‡ä»¤ä¼šä½¿ç›¸åº”çš„ wire å˜é‡ä¸º 1ï¼Œå¦åˆ™ä¸º 0
+	wire Bit_Op 	= Iw_b01;							// 01-- bbbf ffff   æ— 	å¯¹ f ä¸­æŸä½æ“ä½œï¼Œå…·ä½“åŒ…å«ä¸‹é¢å››ç§æƒ…å†µ
+	wire BCF		= Iw_b01 && (Instr[9:8] == 2'b00);	// 0100 bbbf ffff	æ— 	å°† f ä¸­çš„æŸä½æ¸…é›¶
+	wire BSF		= Iw_b01 && (Instr[9:8] == 2'b01);	// 0101 bbbf ffff	æ— 	å°† f ä¸­çš„æŸä½ç½® 1
+	wire BTFSC		= Iw_b01 && (Instr[9:8] == 2'b10);	// 0110 bbbf ffff	æ— 	æ£€æµ‹ f ä¸­çš„æŸä½,ä¸º 0 åˆ™è·³è¿‡
+	wire BTFSS		= Iw_b01 && (Instr[9:8] == 2'b11);	// 0111 bbbf ffff	æ— 	æ£€æµ‹ f ä¸­çš„æŸä½,ä¸º 1 åˆ™è·³è¿‡
 
-	wire RETLW		= Iw_b10 && (Instr[9:8] == 2'b00);	// 1000 kkkk kkkk	ÎŞ	·µ»Ø²¢½«Á¢¼´Êı´«ËÍµ½ W
-	wire CALL		= Iw_b10 && (Instr[9:8] == 2'b00);	// 1001 kkkk kkkk	ÎŞ	µ÷ÓÃ×Ó³ÌĞò
-	wire GOTO		= Iw_b10 && (Instr[9] == 1'b1);		// 101k kkkk kkkk	ÎŞ	ÎŞÌõ¼şÌø×ª
+	wire RETLW		= Iw_b10 && (Instr[9:8] == 2'b00);	// 1000 kkkk kkkk	æ— 	è¿”å›å¹¶å°†ç«‹å³æ•°ä¼ é€åˆ° W
+	wire CALL		= Iw_b10 && (Instr[9:8] == 2'b00);	// 1001 kkkk kkkk	æ— 	è°ƒç”¨å­ç¨‹åº
+	wire GOTO		= Iw_b10 && (Instr[9] == 1'b1);		// 101k kkkk kkkk	æ— 	æ— æ¡ä»¶è·³è½¬
 
-	wire MOVLW		= Iw_b11 && (Instr[9:8] == 2'b00);	// 1100 kkkk kkkk	ÎŞ	½«Á¢¼´Êı´«ËÍµ½ W
-	wire IORLW		= Iw_b11 && (Instr[9:8] == 2'b01);	// 1101 kkkk kkkk	Z	Á¢¼´ÊıÓë W ×÷Âß¼­»òÔËËã
-	wire ANDLW		= Iw_b11 && (Instr[9:8] == 2'b10);	// 1110 kkkk kkkk	Z	Á¢¼´ÊıºÍ W ÏàÓë
-	wire XORLW		= Iw_b11 && (Instr[9:8] == 2'b11);	// 1111 kkkk kkkk	Z	Á¢¼´ÊıÓë W ×÷Âß¼­Òì»òÔËËã
+	wire MOVLW		= Iw_b11 && (Instr[9:8] == 2'b00);	// 1100 kkkk kkkk	æ— 	å°†ç«‹å³æ•°ä¼ é€åˆ° W
+	wire IORLW		= Iw_b11 && (Instr[9:8] == 2'b01);	// 1101 kkkk kkkk	Z	ç«‹å³æ•°ä¸ W ä½œé€»è¾‘æˆ–è¿ç®—
+	wire ANDLW		= Iw_b11 && (Instr[9:8] == 2'b10);	// 1110 kkkk kkkk	Z	ç«‹å³æ•°å’Œ W ç›¸ä¸
+	wire XORLW		= Iw_b11 && (Instr[9:8] == 2'b11);	// 1111 kkkk kkkk	Z	ç«‹å³æ•°ä¸ W ä½œé€»è¾‘å¼‚æˆ–è¿ç®—
 
-	wire K8W_sel	= MOVLW || RETLW;					// Á¢¼´Êı´«ËÍµ½ W
-	wire K8A_sel	= IORLW || ANDLW || XORLW;			// Óë W ×÷Âß¼­ÔËËã
-	wire K8_Op		= K8W_sel || K8A_sel;				// ²Ù×÷ W ¼Ä´æÆ÷
-
-	wire Group0		= MOVF	|| SWAPF || CLR;
-	wire Group1		= RRF	|| RLF;
-	wire Group2a	= (IORWF || IORLW) || (ANDWF || ANDLW) || (XORWF || XORLW);
-	wire Group2b	= COMF || BCF || BSF || BTFSC || BTFSS;
-	wire Group2		= Group2a || Group2b;
-	wire Group3		= ADDWF || SUBWF || (INCF || INCFSZ) || (DECF || DECFSZ);
+	wire K8W_sel	= MOVLW || RETLW;					// ç«‹å³æ•°ä¼ é€åˆ° W
+	wire K8A_sel	= IORLW || ANDLW || XORLW;			// ä¸ W ä½œé€»è¾‘è¿ç®—
+	wire K8_Op		= K8W_sel || K8A_sel;				// æ“ä½œ W å¯„å­˜å™¨
 
 	reg  [1:0]	Op_Mux_L, Op_Mux_A, ALU_out_Mux;
 
 	always @(IORWF, IORLW, BSF, BCF, BTFSC, BTFSS, ANDWF, ANDLW, XORWF, XORLW, COMF) begin
 		case ({IORWF, IORLW, BSF, BCF, BTFSC, BTFSS, ANDWF, ANDLW, XORWF, XORLW, COMF})
 			
-			// Op_Mux_L = 11 È¡·´
-			11'b00000000001: Op_Mux_L = 2'b11; // COMF		f È¡·´
+			// Op_Mux_L = 11 å–å
+			11'b00000000001: Op_Mux_L = 2'b11; // COMF		f å–å
 			
-			// Op_Mux_L = 10 Òì»ò
-			11'b00000000010: Op_Mux_L = 2'b10; // XORLW		Á¢¼´ÊıÓë W ×÷Âß¼­Òì»òÔËËã
-			11'b00000000100: Op_Mux_L = 2'b10; // XORWF		W ºÍ f ×÷Âß¼­Òì»òÔËËã
+			// Op_Mux_L = 10 å¼‚æˆ–
+			11'b00000000010: Op_Mux_L = 2'b10; // XORLW		ç«‹å³æ•°ä¸ W ä½œé€»è¾‘å¼‚æˆ–è¿ç®—
+			11'b00000000100: Op_Mux_L = 2'b10; // XORWF		W å’Œ f ä½œé€»è¾‘å¼‚æˆ–è¿ç®—
 
-			// Op_Mux_L = 01 Óë
-			11'b00000001000: Op_Mux_L = 2'b01; // ANDLW		Á¢¼´ÊıºÍ W ÏàÓë
-			11'b00000010000: Op_Mux_L = 2'b01; // ANDWF		W ºÍ f ×÷Âß¼­ÓëÔËËã
-			11'b00000100000: Op_Mux_L = 2'b01; // BTFSS		¼ì²â f ÖĞµÄÄ³Î»,Îª 1 ÔòÌø¹ı
-			11'b00001000000: Op_Mux_L = 2'b01; // BTFSC		¼ì²â f ÖĞµÄÄ³Î»,Îª 0 ÔòÌø¹ı
-			11'b00010000000: Op_Mux_L = 2'b01; // BCF		½« f ÖĞµÄÄ³Î»ÖÃ 0£¨½« f ÖĞµÄÄ³Î»ÖÃÓë 0£©
+			// Op_Mux_L = 01 ä¸
+			11'b00000001000: Op_Mux_L = 2'b01; // ANDLW		ç«‹å³æ•°å’Œ W ç›¸ä¸
+			11'b00000010000: Op_Mux_L = 2'b01; // ANDWF		W å’Œ f ä½œé€»è¾‘ä¸è¿ç®—
+			11'b00000100000: Op_Mux_L = 2'b01; // BTFSS		æ£€æµ‹ f ä¸­çš„æŸä½,ä¸º 1 åˆ™è·³è¿‡
+			11'b00001000000: Op_Mux_L = 2'b01; // BTFSC		æ£€æµ‹ f ä¸­çš„æŸä½,ä¸º 0 åˆ™è·³è¿‡
+			11'b00010000000: Op_Mux_L = 2'b01; // BCF		å°† f ä¸­çš„æŸä½ç½® 0ï¼ˆå°† f ä¸­çš„æŸä½ç½®ä¸ 0ï¼‰
 
-			// Op_Mux_L = 00 »ò
-			11'b00100000000: Op_Mux_L = 2'b00; // BSF		½« f ÖĞµÄÄ³Î»ÖÃ 1£¨½« f ÖĞµÄÄ³Î»ÖÃ»ò 1£©
-			11'b01000000000: Op_Mux_L = 2'b00; // IORLW		Á¢¼´ÊıÓë W ×÷Âß¼­»òÔËËã
-			11'b10000000000: Op_Mux_L = 2'b00; // IORWF		W ºÍ f ×÷Âß¼­»òÔËËã
+			// Op_Mux_L = 00 æˆ–
+			11'b00100000000: Op_Mux_L = 2'b00; // BSF		å°† f ä¸­çš„æŸä½ç½® 1ï¼ˆå°† f ä¸­çš„æŸä½ç½®æˆ– 1ï¼‰
+			11'b01000000000: Op_Mux_L = 2'b00; // IORLW		ç«‹å³æ•°ä¸ W ä½œé€»è¾‘æˆ–è¿ç®—
+			11'b10000000000: Op_Mux_L = 2'b00; // IORWF		W å’Œ f ä½œé€»è¾‘æˆ–è¿ç®—
 
-			default:		 Op_Mux_L = 2'b00; // È»¶ø²¢Ã»ÓĞÊ²Ã´ÂÑÓÃ
+			default:		 Op_Mux_L = 2'b00; // ç„¶è€Œå¹¶æ²¡æœ‰ä»€ä¹ˆåµç”¨
 		endcase
 	end
 
 	always @(ADDWF, SUBWF, INCF, INCFSZ, DECF, DECFSZ) begin
 		case ({ADDWF, SUBWF, INCF, INCFSZ, DECF, DECFSZ})
 
-			// Op_Mux_A = 11 ¼õ1
-			6'b000001: Op_Mux_A = 2'b11;		// DECFSZ	f ¼õ 1,Îª 0 ÔòÌø¹ı
-			6'b000010: Op_Mux_A = 2'b11;		// DECF		f ¼õ 1
+			// Op_Mux_A = 11 å‡1
+			6'b000001: Op_Mux_A = 2'b11;		// DECFSZ	f å‡ 1,ä¸º 0 åˆ™è·³è¿‡
+			6'b000010: Op_Mux_A = 2'b11;		// DECF		f å‡ 1
 
-			// Op_Mux_A = 10 ¼Ó1
-			6'b000100: Op_Mux_A = 2'b10;		// INCFSZ	f Ôö 1,Îª 0 ÔòÌø¹ı
-			6'b001000: Op_Mux_A = 2'b10;		// INCF		f Ôö 1
+			// Op_Mux_A = 10 åŠ 1
+			6'b000100: Op_Mux_A = 2'b10;		// INCFSZ	f å¢ 1,ä¸º 0 åˆ™è·³è¿‡
+			6'b001000: Op_Mux_A = 2'b10;		// INCF		f å¢ 1
 
-			// Op_Mux_A = 01 ¼ÓW
-			6'b010000: Op_Mux_A = 2'b01;		// SUBWF	f ¼õÈ¥ W
+			// Op_Mux_A = 01 å‡W
+			6'b010000: Op_Mux_A = 2'b01;		// SUBWF	f å‡å» W
 
-			// Op_Mux_A = 01 ¼õW
-			6'b100000: Op_Mux_A = 2'b00;		// ADDWF	f ¼ÓÉÏ W
+			// Op_Mux_A = 00 åŠ W
+			6'b100000: Op_Mux_A = 2'b00;		// ADDWF	f åŠ ä¸Š W
 
-			default:   Op_Mux_A = 2'b00;		// È»¶ø²¢Ã»ÓĞÊ²Ã´ÂÑÓÃ
+			default:   Op_Mux_A = 2'b00;		// ç„¶è€Œå¹¶æ²¡æœ‰ä»€ä¹ˆåµç”¨
 		endcase
 	end
+
+	wire Group0		= MOVF	|| SWAPF || CLR;			// å°† f çš„å†…å®¹ä¼ é€åˆ°ç›®æ ‡å¯„å­˜å™¨, å°† f ä¸­çš„ä¸¤ä¸ªåŠå­—èŠ‚è¿›è¡Œäº¤æ¢, f æ¸…é›¶
+														// 00 1000 df ffff
+														// 00 1110 df ffff
+														// 00 0001 1f ffff
+														// 00 0001 00 0000
+
+	wire Group1		= RRF	|| RLF;						// å¯¹ f æ‰§è¡Œå¸¦è¿›ä½çš„å¾ªç¯å³ç§», å¯¹ f æ‰§è¡Œå¸¦è¿›ä½çš„å¾ªç¯å·¦ç§»
+														// 00 1100 df ffff
+														// 00 1101 df ffff
+
+	wire Group2a	= (IORWF || IORLW) || (ANDWF || ANDLW) || (XORWF || XORLW);	//
+	wire Group2b	= COMF || BCF || BSF || BTFSC || BTFSS;
+	wire Group2		= Group2a || Group2b;
+	wire Group3		= ADDWF || SUBWF || (INCF || INCFSZ) || (DECF || DECFSZ);
+
+	// assign         C_new =   out_mux[1] ? C_wire : C_out;
+    // assign   ALU_out_buf =   out_mux[1] ? (out_mux[0] ? Sum : Func) : (out_mux[0] ? S_out : T_out);
+    // assign       ALU_out =   ALU_out_buf;
+    // assign         Z_new = ~|ALU_out_buf;
+
 
 	always @(Group0, Group1, Group2, Group3) begin
 		case({Group0, Group1, Group2, Group3})
-			4'b0001:	ALU_out_Mux = 2'b11;
-			4'b0010:	ALU_out_Mux = 2'b10;
-			4'b0100:	ALU_out_Mux = 2'b01;
-			4'b1000:	ALU_out_Mux = 2'b00;
+			4'b0001:	ALU_out_Mux = 2'b11;	// Group3
+			4'b0010:	ALU_out_Mux = 2'b10;	// Group2
+			4'b0100:	ALU_out_Mux = 2'b01;	// Group1
+			4'b1000:	ALU_out_Mux = 2'b00;	// Group0
 		endcase
 	end
 
 
-	// ¶ÔÈç 01xx bbbf ffff ÖĞ bbb Î»²Ù×÷µÄÑÚÂë
+	// å¯¹å¦‚ 01xx bbbf ffff ä¸­ bbb ä½æ“ä½œçš„æ©ç 
 	reg [7:0] bit_loc;
 
 	always @(Instr[7:5]) begin
