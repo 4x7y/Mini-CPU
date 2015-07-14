@@ -22,7 +22,7 @@
 
 module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF, 
                   RLF, SWAPF, BTFSS, RETLW, CALL, GOTO, bit_mask, Bit_Op, 
-                  K8A_sel, K8W_sel, Op_Mux_L, Op_Mux_A, ALU_out_Mux, FSZ, 
+                  K8A_sel, K8W_sel, Op_Mux_L, Op_Mux_A, ALU_out_Mux, FSZ,
                   Z_en, DC_en, C_en, STT_en, Stack_1_wr, W_wr, f_wr, f_rd);
 //
     input [11:0] Instr;
@@ -96,7 +96,7 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 	wire BTFSS		= Iw_b01 && (Instr[9:8] == 2'b11);	// 0111 bbbf ffff	无	检测 f 中的某位,为 1 则跳过
 
 	wire RETLW		= Iw_b10 && (Instr[9:8] == 2'b00);	// 1000 kkkk kkkk	无	返回并将立即数传送到 W
-	wire CALL		= Iw_b10 && (Instr[9:8] == 2'b00);	// 1001 kkkk kkkk	无	调用子程序
+	wire CALL		= Iw_b10 && (Instr[9:8] == 2'b01);	// 1001 kkkk kkkk	无	调用子程序
 	wire GOTO		= Iw_b10 && (Instr[9] == 1'b1);		// 101k kkkk kkkk	无	无条件跳转
 
 	wire MOVLW		= Iw_b11 && (Instr[9:8] == 2'b00);	// 1100 kkkk kkkk	无	将立即数传送到 W
@@ -106,7 +106,7 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 
 	wire K8W_sel	= MOVLW || RETLW;					// 立即数传送到 W
 	wire K8A_sel	= IORLW || ANDLW || XORLW;			// 与 W 作逻辑运算
-	wire K8_Op		= K8W_sel || K8A_sel;				// 操作 W 寄存器
+	wire 		= K8W_sel || K8A_sel;					// 操作 W 寄存器
 
 	reg  [1:0]	Op_Mux_L, Op_Mux_A, ALU_out_Mux;
 
@@ -207,7 +207,7 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 	wire f_wr = (BCF || BSF) || (Iw_b00 && (Instr[5] == 1'b1));
 
 	wire W_wr = K8_Op || (Iw_b00 && !Iw_bxx0000 && (Instr[5] == 1'b0)); //
-	wire Stack_l_wr = CALL || RETLW;
+	wire Stack_1_wr = CALL || RETLW;
 
 	//
 	wire FSZ	= DECFSZ || INCFSZ || BTFSC;

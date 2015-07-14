@@ -66,13 +66,13 @@ module Reg_File(
 	wire [7:0]  data_out_RAM;
 	
 	Data_RAM     Data_RAM_01 (
-	.clk(clk),
-	.en_A(Data_Space),              //
-	.wr_A(f_wr),
-	.adrs_A(f_adrs),
-	.data_in(f_in_data),
-	.adrs_B(f_adrs),                // Same data bus
-	.data_out(data_out_RAM)
+		.clk(clk),
+		.en_A(Data_Space),              //
+		.wr_A(f_wr),
+		.adrs_A(f_adrs),
+		.data_in(f_in_data),
+		.adrs_B(f_adrs),                // Same data bus
+		.data_out(data_out_RAM)
 	);
 	
 	wire    TMR0_wr     = f_wr & (f_adrs ==   TMR0_adrs);
