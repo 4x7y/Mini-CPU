@@ -45,7 +45,7 @@ module Reg_File(
 
 	output reg [4:0] FSR,
 	output reg       C,
-	output reg       PCL_wr
+	output	         PCL_wr
 	);
 	
 	parameter   INDF_adrs = 5'h00;      //      |        INDF        | (Virtual Address)
