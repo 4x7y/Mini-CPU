@@ -150,14 +150,12 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		.f_wr(f_wr),
 		.f_rd()         			//not used here anymore
 	);
-////////////////////////////////////////////////////////////////////////////////////
 
 //		   f_adrs == INDF_adrs		: Indirect Addressing
 //		   f_adrs == 2'h01 ~ 2'hFF	: Direct Addressing 
 	assign f_adrs = (f5 == INDF_adrs) ? FSR : f5;
 
-//
-//right
+
 	Reg_File  Reg_File_01 (
 		// Input
 		.rst(rst),
@@ -193,11 +191,11 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 	ALU8  ALU8_01
 	(
 		.clr(CLR),
-		.swap_n_mov(SWAPF),//////////////////////////////////////?
-		.rlf_n_rrf(RLF),///////////////////////////////////////?
+		.swap_n_mov(SWAPF),
+		.rlf_n_rrf(RLF),
 		.op_mux_l(Op_Mux_L),
 		.op_mux_a(Op_Mux_A),
-		.sub(SUBWF),///////////////////////////////////////////// RIGHT
+		.sub(SUBWF),
 		.out_mux(ALU_out_Mux),
 		.C_in(C),
 		.op_A1(f_out_data),
@@ -209,19 +207,14 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		.DC_new(DC_new),
 		.Z_new(Z_new)
 	);
-
-
-	// not sure...
-	///////////////////////////////////////
-	assign f_in_data = Instr[7:0];
-	assign W_next	 = ALU_out;
+	
+	assign f_in_data = MOVWF  ? W  : ALU_out;
+	assign W_next	 = K8A_sel? K8 : ALU_out;
 
 	always @(posedge clk)
     	if (W_wr)		W <= W_next;
     	else			W <= W;
-    ///////////////////////////////////////
 
-    // right
 	Reg_Misc  Reg_Misc_01
 	(
 		.rst(rst),
