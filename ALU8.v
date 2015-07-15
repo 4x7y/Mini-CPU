@@ -33,7 +33,7 @@ module ALU8(
     input   [7:0] op_B1,
     input   [7:0] op_A,         //to the Logic8 sub module only
     input   [7:0] op_B,         //to the Logic8 sub module only
-    output  ALU_out,
+    output  [7:0] ALU_out,
     output  C_new,
     output  DC_new,
     output  Z_new
