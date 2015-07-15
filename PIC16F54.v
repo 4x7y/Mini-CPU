@@ -100,8 +100,8 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		.clk(clk),
 		.push(push),
 		.pop(pop),
-		.FI(stack_psh),
-		.FO(stack_pop)
+		.in(stack_psh),
+		.out(stack_pop)
 	);
 
 	// not sure ...

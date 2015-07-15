@@ -24,7 +24,7 @@ module Stack (
 	input push,
 	input pop,
 	input [8:0] in,
-	output out
+	output [8:0] out
 	);
 
 	//									 ---------------
