@@ -21,7 +21,7 @@
 
 //同步写，异步读
 module Reg_File(
-	input rst,
+    input rst,
     input clk,
 	input tmr0_inc,
 	input C_en,
@@ -45,7 +45,7 @@ module Reg_File(
 
 	output reg [4:0] FSR,
 	output reg       C,
-	output	         PCL_wr
+	output           PCL_wr
 	);
 	
 	parameter   INDF_adrs = 5'h00;      //      |        INDF        | (Virtual Address)
@@ -61,9 +61,9 @@ module Reg_File(
 													   // in the range of [7:31] -> Data_Space=1
 	reg  [7:0]  TMR0;
 	reg  [2:0]  PAn;
-	reg         T0_N, PD_N, Z, DC;
+	reg         TO_N, PD_N, Z, DC;
 	
-	wire [7:0]  STATUS     = {PAn, T0_N, PD_N, Z, DC, C};
+	wire [7:0]  STATUS     = {PAn, TO_N, PD_N, Z, DC, C};
 	
 	wire [7:0]  data_out_RAM;
 	
