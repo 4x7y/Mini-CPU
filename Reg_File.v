@@ -21,6 +21,8 @@
 
 //同步写，异步读
 module Reg_File(
+	input rst,
+    input clk,
 	input tmr0_inc,
 	input C_en,
 	input DC_en,
