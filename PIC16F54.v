@@ -83,25 +83,25 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 	(
 		.rst(rst),
 		.Instr(Instr),
-		.PC(),
-		.f_in_data(),
-		.PCL_wr(),
-		.Z(),
-		.PCL1(),
-		.PC_next(t),
-		.push(),
-		.pop(),
-		.stack_psh(),
-		.stack_pop()
+		.PC(PC),
+		.f_in_data(f_in_data),
+		.PCL_wr(PCL_wr),
+		.Z(Z_new),
+		.PCL1(PCL1),
+		.PC_next(PC_next),
+		.push(push),
+		.pop(pop),
+		.stack_psh(stack_psh),
+		.stack_pop(stack_pop)
 	);
 
 	Stack  Stack_01
 	(
-		.clk(),
-		.push(),
-		.pop(),
-		.FI(),
-		.FO()
+		.clk(clk),
+		.push(push),
+		.pop(pop),
+		.FI(stack_psh),
+		.FO(stack_pop)
 	);
 
 	// not sure ...
@@ -119,39 +119,43 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		// Input
 		.Instr(Instr),
 		// Output
-		.OPTION(),
+		.OPTION(OPTION_wr),
 		.SLEEP(SLEEP),
-		.CLRWDT(),
-		.TRIS1(),
-		.TRIS2(),
-		.MOVWF(),
-		.CLR(), 
-		.SUBWF(), 
-		.RLF(),
-		.SWAPF(),
+		.CLRWDT(CLRWDT),
+		.TRIS1(TRISA_wr),
+		.TRIS2(TRISB_wr),
+		.MOVWF(MOVWF),
+		.CLR(CLR), 
+		.SUBWF(SUBWF), 
+		.RLF(RLF),
+		.SWAPF(SWAPF),
 		.BTFSS(),         //not used here anymore
 		.RETLW(),         //not used here anymore
 		.CALL(),         //not used here anymore
 		.GOTO(),         //not used here anymore
-		.bit_mask(),
-		.Bit_Op(), 
-		.K8A_sel(),
-		.K8W_sel(),
+		.bit_mask(bit_mask),
+		.Bit_Op(Bit_Op), 
+		.K8A_sel(K8A_sel),
+		.K8W_sel(K8W_sel),
 		.Op_Mux_L(Op_Mux_L),        // 0: 或 	1: 与    	2: 异或  	3: 取反
 		.Op_Mux_A(Op_Mux_A),        // 0: f加W	1: f减W  	2: f增1		3: f减1
 		.ALU_out_Mux(ALU_out_Mux),  // 0: Throu	1: Shift	2: Logic	3: Adder
-		.FSZ(FSZ),                  // not used here anymore
+		.FSZ(),                  	// not used here anymore
 		.Z_en(Z_en), 				// -> Reg_File
 		.DC_en(DC_en),				// -> Reg_File
 		.C_en(C_en),				// -> Reg_File
-		.STT_en(STT_en),			// not used here anymore
-		.Stack_1_wr(Stack_1_wr),	// not used here anymore
+		.STT_en(),					// not used here anymore
+		.Stack_1_wr(),				// not used here anymore
 		.W_wr(W_wr),				// 
 		.f_wr(f_wr),
-		.f_rd(f_rd)         //not used here anymore
+		.f_rd()         			//not used here anymore
 	);
+////////////////////////////////////////////////////////////////////////////////////
 
-	assign f_adrs = Instr[4:0];
+//		   f_adrs == INDF_adrs		: Indirect Addressing
+//		   f_adrs == 2'h01 ~ 2'hFF	: Direct Addressing 
+	assign f_adrs = (f5 == INDF_adrs) ? FSR : f5;
+
 //
 //right
 	Reg_File  Reg_File_01 (
@@ -183,17 +187,17 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 		.PCL_wr(PCL_wr)
 	);
 
-	assign op_A_wire = f_out_data;
-	assign op_B_wire = W;
+	assign op_A_wire = K8A_sel ?		K8 : f_out_data;
+	assign op_B_wire = Bit_Op  ?  bit_mask : W;
 
 	ALU8  ALU8_01
 	(
 		.clr(CLR),
-		.swap_n_mov(),//////////////////////////////////////
-		.rlf_n_rrf(),///////////////////////////////////////
+		.swap_n_mov(SWAPF),//////////////////////////////////////?
+		.rlf_n_rrf(RLF),///////////////////////////////////////?
 		.op_mux_l(Op_Mux_L),
 		.op_mux_a(Op_Mux_A),
-		.sub(),/////////////////////////////////////////////
+		.sub(SUBWF),///////////////////////////////////////////// RIGHT
 		.out_mux(ALU_out_Mux),
 		.C_in(C),
 		.op_A1(f_out_data),
@@ -209,8 +213,8 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 
 	// not sure...
 	///////////////////////////////////////
-	assign f_in_data = PCL + 1;
-	assign W_next	 = Instr[7:0];
+	assign f_in_data = Instr[7:0];
+	assign W_next	 = ALU_out;
 
 	always @(posedge clk)
     	if (W_wr)		W <= W_next;

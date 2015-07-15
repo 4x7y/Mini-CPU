@@ -106,7 +106,7 @@ module Decoder(Instr, OPTION, SLEEP, CLRWDT, TRIS1, TRIS2, MOVWF, CLR, SUBWF,
 
 	wire K8W_sel	= MOVLW || RETLW;					// 立即数传送到 W
 	wire K8A_sel	= IORLW || ANDLW || XORLW;			// 与 W 作逻辑运算
-	wire 		= K8W_sel || K8A_sel;					// 操作 W 寄存器
+	wire K8_Op		= K8W_sel || K8A_sel;					// 操作 W 寄存器
 
 	reg  [1:0]	Op_Mux_L, Op_Mux_A, ALU_out_Mux;
 

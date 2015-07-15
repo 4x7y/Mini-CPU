@@ -37,9 +37,9 @@ module Reg_File(
 	input [7:0] PCL1,
 	input [3:0] porta_in,
 	input [7:0] portb_in,
-	input  reg [7:0] f_out_data,
-	input  reg [7:0] PORTB,
-	input  reg [7:0] PORTA,
+	output  reg [7:0] f_out_data,
+	output  reg [7:0] PORTB,
+	output  reg [7:0] PORTA,
 
 	output reg [4:0] FSR,
 	output reg       C,
