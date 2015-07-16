@@ -1,9 +1,5 @@
 # PIC16F5X-MCU
 
-#### Uncomplete
-
-* PIC16F54.v
-
 #### Complete
 
 * ALU8.v
@@ -15,14 +11,23 @@
 * Seqnc.v
 * Shift8.v
 * Stack.v
-* Throu.v
+* Throu8.v
 * Reg_File.v
+* Reg_Misc.v
+* PIC16F54.v
 * Reg_Misc.v
 
 #### Tested
 
 * UART_rx.v
 * UART_tx.v
+* Decoder.v
+* Stack.v
+* Adder8.v
+* Shift8.v
+* Logic8.v
+* Throu8.v
+* ALU8.v
 
 ## Architecture
 
