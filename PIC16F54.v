@@ -209,7 +209,7 @@ module PIC16F54(rst, clk, porta_in, portb_in, porta_out, portb_out,
 	);
 	
 	assign f_in_data = MOVWF  ? W  : ALU_out;
-	assign W_next	 = K8A_sel? K8 : ALU_out;
+	assign W_next	 = K8W_sel? K8 : ALU_out;
 
 	always @(posedge clk)
     	if (W_wr)		W <= W_next;
