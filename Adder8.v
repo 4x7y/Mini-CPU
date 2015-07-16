@@ -32,7 +32,7 @@ module Adder8(
     
     wire [7:0] op_B_tmp;
     
-    assign op_B_tmp = op_mux[1] ? ((op_mux[0]) ? 8'hff : 8'h01) : ((op_mux[1]) ? ~op_B : op_B);   // dec, inc, sub, add
+    assign op_B_tmp = op_mux[1] ? ((op_mux[0]) ? 8'hff : 8'h01) : ((op_mux[0]) ? ~op_B : op_B);   // dec, inc, sub, add
     
     wire [4:0] Sum_L = {1'b0, op_A[3:0]} + {1'b0, op_B_tmp [3:0]} + sub;
     wire [8:4] Sum_H = {1'b0, op_A[7:4]} + {1'b0, op_B_tmp[7:4]} + Sum_L[4];
