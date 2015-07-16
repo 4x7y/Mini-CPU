@@ -40,8 +40,8 @@ module Reg_File(
 	input [3:0] porta_in,
 	input [7:0] portb_in,
 	output  reg [7:0] f_out_data,
-	output  reg [3:0] PORTA,
 	output  reg [7:0] PORTB,
+	output  reg [3:0] PORTA,
 
 	output reg [4:0] FSR,
 	output reg       C,

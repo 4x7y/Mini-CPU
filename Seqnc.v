@@ -40,7 +40,7 @@ module Seqnc(
 	wire [8:0]	K9 = Instr[8:0]; // 9 instant number
 
 	wire		ONE = 1'b1;
-	wire		TWO = 2'b10;
+	wire [1:0]	TWO = 2'b10;
 	wire [8:0]	PC_plus2, PC_plus;
 
 	assign PC_plus2 = PC + TWO;
