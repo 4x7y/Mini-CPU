@@ -69,8 +69,8 @@ module ALU8(
     
     
     Adder8      Adder8_01(
-    .op_A(op_A),
-    .op_B(op_B),
+    .op_A(op_A1),
+    .op_B(op_B1),
     .op_mux(op_mux_a),     // 0: add , 1: sub , 2: inc , 3: dec
     .sub(sub),
     .Sum(Sum),
