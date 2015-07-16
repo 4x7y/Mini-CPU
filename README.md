@@ -1,5 +1,9 @@
 # PIC16F5X-MCU
 
+## Architecture
+
+![image](http://i.imgur.com/XSFLjRH.png)
+
 #### Complete
 
 * ALU8.v
@@ -29,7 +33,7 @@
 * Throu8.v
 * ALU8.v
 
-## Architecture
+## File Hierarchy
 
 * PIC16F54
 	* Seqnc
