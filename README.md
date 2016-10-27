@@ -1,4 +1,6 @@
-# PIC16F5X-MCU
+# Mini-CPU
+
+Based on PIC16F5X-MCU Instruction set
 
 ## Architecture
 
